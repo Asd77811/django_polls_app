@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7=r!ivhy&=i3@3pal_1v$evp$bo&y%=#66y_+!7ucud(0d0-!='
-
+# SECRET_KEY = 'django-insecure-7=r!ivhy&=i3@3pal_1v$evp$bo&y%=#66y_+!7ucud(0d0-!='
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG',False).lower()== True
 
 
 # Application definition
@@ -88,8 +89,12 @@ DATABASES = {
 # The above code is the default database configuration that Django uses when you first create a project.
 
 # Password validation
-DATABASES['default'] = dj_database_url.parse('postgresql://django_db_nfeh_user:UousnkXLspz39kIoy3HMMwRNLM6Gn0Iv@dpg-csaa3gij1k6c73cnek70-a.oregon-postgres.render.com/django_db_nfeh')
+# DATABASES['default'] = dj_database_url.parse('postgresql://django_db_nfeh_user:UousnkXLspz39kIoy3HMMwRNLM6Gn0Iv@dpg-csaa3gij1k6c73cnek70-a.oregon-postgres.render.com/django_db_nfeh')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+
+databaseURL = os.environ.get('DATABASE_URL')
+DATABASES['default'] = dj_database_url.parse(databaseURL)
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
